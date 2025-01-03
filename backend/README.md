@@ -200,3 +200,85 @@ This endpoint is used to log out the authenticated user.
 
 ### Notes
 - The JWT token is blacklisted upon successful logout.
+
+# Captain Registration Endpoint
+
+## POST /captain/register
+
+### Description
+This endpoint is used to register a new captain.
+
+### Request Body
+The request body should be a JSON object containing the following fields:
+- `fullname`: An object containing:
+  - `firstname`: A string with a minimum length of 3 characters.
+  - `lastname`: A string with a minimum length of 3 characters.
+- `email`: A valid email address.
+- `password`: A string with a minimum length of 6 characters.
+- `vehicle`: An object containing:
+  - `color`: A string with a minimum length of 3 characters.
+  - `plate`: A string with a minimum length of 3 characters.
+  - `capacity`: A number representing the capacity of the vehicle.
+  - `vehicleType`: A string that must be either "car" or "motorcycle".
+
+### Example Request
+```json
+{
+  "fullname": {
+    "firstname": "Jane",
+    "lastname": "Doe"
+  },
+  "email": "jane.doe@example.com",
+  "password": "password123",
+  "vehicle": {
+    "color": "Red",
+    "plate": "ABC123",
+    "capacity": 4,
+    "vehicleType": "car"
+  }
+}
+```
+
+### Responses
+
+#### Success
+- **Status Code**: 201 Created
+- **Response Body**:
+  ```json
+  {
+    "token": "jwt_token",
+    "captain": {
+      "_id": "captain_id",
+      "fullname": {
+        "firstname": "Jane",
+        "lastname": "Doe"
+      },
+      "email": "jane.doe@example.com",
+      "vehicle": {
+        "color": "Red",
+        "plate": "ABC123",
+        "capacity": 4,
+        "vehicleType": "car"
+      }
+    }
+  }
+  ```
+
+#### Validation Errors
+- **Status Code**: 400 Bad Request
+- **Response Body**:
+  ```json
+  {
+    "errors": [
+      {
+        "msg": "Error message",
+        "param": "parameter_name",
+        "location": "body"
+      }
+    ]
+  }
+  ```
+
+### Notes
+- The `password` field is hashed before being stored in the database.
+- A JWT token is generated and returned upon successful registration.
