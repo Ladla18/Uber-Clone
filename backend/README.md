@@ -282,3 +282,151 @@ The request body should be a JSON object containing the following fields:
 ### Notes
 - The `password` field is hashed before being stored in the database.
 - A JWT token is generated and returned upon successful registration.
+
+# Captain Login Endpoint
+
+## POST /captain/login
+
+### Description
+This endpoint is used to log in an existing captain.
+
+### Request Body
+The request body should be a JSON object containing the following fields:
+- `email`: A valid email address.
+- `password`: A string with a minimum length of 6 characters.
+
+### Example Request
+```json
+{
+  "email": "jane.doe@example.com",
+  "password": "password123"
+}
+```
+
+### Responses
+
+#### Success
+- **Status Code**: 200 OK
+- **Response Body**:
+  ```json
+  {
+    "token": "jwt_token",
+    "captain": {
+      "_id": "captain_id",
+      "fullname": {
+        "firstname": "Jane",
+        "lastname": "Doe"
+      },
+      "email": "jane.doe@example.com",
+      "vehicle": {
+        "color": "Red",
+        "plate": "ABC123",
+        "capacity": 4,
+        "vehicleType": "car"
+      }
+    }
+  }
+  ```
+
+#### Validation Errors
+- **Status Code**: 400 Bad Request
+- **Response Body**:
+  ```json
+  {
+    "errors": [
+      {
+        "msg": "Error message",
+        "param": "parameter_name",
+        "location": "body"
+      }
+    ]
+  }
+  ```
+
+#### Authentication Errors
+- **Status Code**: 401 Unauthorized
+- **Response Body**:
+  ```json
+  {
+    "message": "Invalid Email or Password"
+  }
+  ```
+
+### Notes
+- A JWT token is generated and returned upon successful login.
+
+# Captain Profile Endpoint
+
+## GET /captain/profile
+
+### Description
+This endpoint is used to get the profile of the authenticated captain.
+
+### Request Headers
+- `Authorization`: Bearer token
+
+### Responses
+
+#### Success
+- **Status Code**: 200 OK
+- **Response Body**:
+  ```json
+  {
+    "captain": {
+      "_id": "captain_id",
+      "fullname": {
+        "firstname": "Jane",
+        "lastname": "Doe"
+      },
+      "email": "jane.doe@example.com",
+      "vehicle": {
+        "color": "Red",
+        "plate": "ABC123",
+        "capacity": 4,
+        "vehicleType": "car"
+      }
+    }
+  }
+  ```
+
+#### Authentication Errors
+- **Status Code**: 401 Unauthorized
+- **Response Body**:
+  ```json
+  {
+    "message": "Unauthorized: No token provided"
+  }
+  ```
+
+# Captain Logout Endpoint
+
+## GET /captain/logout
+
+### Description
+This endpoint is used to log out the authenticated captain.
+
+### Request Headers
+- `Authorization`: Bearer token
+
+### Responses
+
+#### Success
+- **Status Code**: 200 OK
+- **Response Body**:
+  ```json
+  {
+    "message": "Captain logged out successfully"
+  }
+  ```
+
+#### Authentication Errors
+- **Status Code**: 401 Unauthorized
+- **Response Body**:
+  ```json
+  {
+    "message": "Unauthorized: No token provided"
+  }
+  ```
+
+### Notes
+- The JWT token is blacklisted upon successful logout.
