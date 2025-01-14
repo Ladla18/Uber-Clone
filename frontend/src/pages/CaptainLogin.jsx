@@ -60,7 +60,7 @@ const CaptainLogin = () => {
       </div>
 
       <Link
-        to="/captain-login"
+        to="/login"
         className="text-center  font-medium  text-lg mt-60 bg-green-300 p-2 rounded"
       >
         Sign In As User
